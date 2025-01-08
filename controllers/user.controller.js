@@ -1,4 +1,5 @@
 const userModel = require(`../models/index`).user
+const { request, response } = require("express")
 const md5 = require(`md5`) // memanggil md5 yang berfungsi untuk enkripsi password
 const { where } = require("sequelize")
 
@@ -86,6 +87,23 @@ exports.updateUser = async (request, response) => {
             message: error.message
         })
     }
+}
+
+exports.getAllUsers = (request, response) => {
+    userModel.findAll()
+        .then(result => {
+            return response.json({
+                status: `success`,
+                message: `Data semua user berhasil diambil`,
+                data: result
+            })
+        })
+        .catch(error => {
+            return response.json({
+                status: `failed`,
+                message: error.message
+            })
+        })
 }
 
 exports.getUser = (request, response) => {
